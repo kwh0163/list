@@ -42,20 +42,72 @@ void push_back(int num)
 
 void push_front(int num)
 {
+	cursor = start.next;
+	element* ele = (element*)malloc(sizeof(element));
+	ele->num = num;
+	ele->next = cursor;
+	start.next = ele;
+}
+
+int pop_back()
+{
 	cursor = &start;
+	element* tmp = NULL;
 	while (true)
 	{
 		if (cursor->next == NULL)
 		{
 			break;
 		}
+		if (cursor->next->next == NULL)
+		{
+			tmp = cursor;
+		}
 		cursor = cursor->next;
 	}
-	element* eF = (element*)malloc(sizeof(element));
+	if (cursor == &start)
+	{
+		printf("clear\n");
+		return 0;
+	}
+	int retval = cursor->num;
+	free(cursor);
+	tmp->next = NULL;
+	return retval;
+}
+
+int pop_front()
+{
+	if (start.next == NULL)
+	{
+		printf("clear\n");
+		return 0;
+	}
+	cursor = start.next->next;
+	int retval = start.next->num;
+	free(start.next);
+	start.next = cursor;
+	return retval;
 	
 }
 
-
+void push_at(int num, int index)
+{
+	element* at = (element*)malloc(sizeof(element));
+	cursor = &start;
+	for (int i = 1; i < index; i++)
+	{
+		if (cursor -> next == NULL)
+		{
+			printf("push at error\n");
+			return;
+		}
+		cursor = cursor->next;
+	}
+	at->num = num;
+	at->next = cursor->next;
+	cursor->next = at;
+}
 
 /*int* someFunc()
 {
@@ -93,16 +145,17 @@ int main()
 	return;
 	*/
 
-	element e_1;
+	/*element e_1;
 	e_1.num = 1;
 	element e_2;
 	e_2.num = 2;
 	push_back(&e_1);
-	push_back(&e_2);
+	push_back(&e_2);*/
+	//중요: free()는 heap 영역에 있는 변수만 가능하다.
+	
 	push_back(1);
 	push_back(3);
-	push_back(5);
+	push_at(9, 4);
 	print_all();
-
-
+	
 }
