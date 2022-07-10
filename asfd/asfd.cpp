@@ -95,7 +95,7 @@ void push_at(int num, int index)
 {
 	element* at = (element*)malloc(sizeof(element));
 	cursor = &start;
-	for (int i = 1; i < index; i++)
+	for (int i = 0; i < index; i++)
 	{
 		if (cursor -> next == NULL)
 		{
@@ -107,6 +107,26 @@ void push_at(int num, int index)
 	at->num = num;
 	at->next = cursor->next;
 	cursor->next = at;
+}
+
+int pop_at(int index)
+{
+	element* at = NULL;
+	cursor = &start;
+	while (index-- != 0)
+	{
+		if (cursor->next == NULL)
+		{
+			printf("remove at error\n");
+			return 0;
+		}
+		cursor = cursor->next;
+	}
+	at = cursor->next;
+	int retval = cursor->next->num;
+	cursor->next = cursor->next->next;
+	free(at);
+	return retval;
 }
 
 /*int* someFunc()
@@ -155,7 +175,9 @@ int main()
 	
 	push_back(1);
 	push_back(3);
-	push_at(9, 4);
+	push_back(5);
+	push_back(7);
+	pop_at(2);
 	print_all();
 	
 }
